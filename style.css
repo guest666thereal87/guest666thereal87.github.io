@@ -1,0 +1,13 @@
+html {
+    --text: #1b120a;
+    --background: #faf5f1;
+    --primary: #bd824f;
+    --secondary: #939ed7;
+    --accent: #c072cb;
+}
+
+body {
+    color:var(--text); background: var(--background);
+  
+}
+font familey: "  "
