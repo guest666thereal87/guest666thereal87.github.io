@@ -1,13 +1,42 @@
 html {
-    --text: #1b120a;
+    --text: #000000;
     --background: #faf5f1;
     --primary: #bd824f;
     --secondary: #939ed7;
     --accent: #c072cb;
 }
 
-body {
-    color:var(--text); background: var(--background);
-  
+@keyframes rainbow {
+    0% {
+        color: red;
+    }
+
+    100% {
+        color: teal;
+    }
 }
-font familey: "  "
+
+* {
+      animation: 1s rainbow infinite alternate;
+    border: 3px solid;
+
+}
+
+body {
+    color: var(--text);
+    background: var(--background);
+}
+
+h1 {
+  font-family: "Audiowide";
+    color: var(--primary);
+}
+
+img:hover {
+    transform: rotate(360000deg);
+    filter: hue-rotate(360000deg);
+}
+
+img {
+    transition: linear 10s;
+}
