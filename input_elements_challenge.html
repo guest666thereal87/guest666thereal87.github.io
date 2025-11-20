@@ -90,13 +90,16 @@
         greetingOutput.textContent =
           "hello " + name + ", you are " + age + " years old!";
         // TODO: Display a message like "Hello NAME, you are AGE years old!"
+        // 1. Add event listener for "input" event on colorInput .
+        // 2. inside the event handler, set colorOutput.style.backgroundColor to the selected value.
         // Challenge: If age < 13, show "your just a babeh!" instead.
+        // Challenge: Also display the hex code and volume value dynamically.
         if (age < 13) {
           greetingOutput.textContent += " You're just a babeh!";
         }
       });
 
-      // --- PART 2 ---
+      // --- PART 2 --- 
       const colorInput = document.getElementById("colorInput");
       const volumeInput = document.getElementById("volumeInput");
       const colorOutput = document.getElementById("colorOutput");
@@ -110,8 +113,9 @@
       const modeOutput = document.getElementById("modeOutput");
 
       btnSubmit.addEventListener("click", () => {
-        // TODO: Find which radio button is checked and display it.
-        // Challenge: Include whether the user subscribed or not.
+        // TODO: Find which radio button is checked and display  it.
+
+        // if (boolean OR if (boolean == true) check if "boolean" is true
       });
     </script>
   </body>
