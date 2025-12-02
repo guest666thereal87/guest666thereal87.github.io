@@ -1,52 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clicker Game</title>
-    <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-    <main class="container">
-        <h1 class="title">Clicker Game</h1>
+  </head>
+  <body>
+    <section>
+      <div class="main">
+        <div class="left"></div>
+        <div class="center"></div>
 
-        <section id="stats" class="card">
-            <p><strong>Clicks:</strong> <span id="click-count">0</span></p>
-            <p><strong>Click value:</strong> <span id="click-value">1</span></p>
-            <p><strong>Clicks / sec:</strong> <span id="cps">0</span></p>
-        </section>
+        <div class="right"></div>
+      </div>
+      <img src="download.jpg" alt="bag of money" />
+      <h3>money: 0</h3>
+      <button>click me!</button>
+      <button id="startBtn">Start Auto-Clicker</button>
+      <button id="stopBtn">Stop Auto-Clicker</button>
+    </section>
+    <script>
+      let money = 0;
+      const moneyDisplay = document.querySelector("h3");
+      const button = document.querySelector("button");
 
-        <section id="play" class="card center">
-            <button id="click-button" class="big">Click Me!</button>
-        </section>
+      button.addEventListener("click", () => {
+        money += 1;
+        moneyDisplay.textContent = `money: ${money}`;
+      });
 
-        <section id="upgrades" class="card upgrades">
-            <div class="upgrade">
-                <h3>Auto Clicker</h3>
-                <p>Generates clicks automatically.</p>
-                <p>Owned: <span id="auto-count">0</span></p>
-                <p>Cost: <span id="auto-cost">50</span></p>
-                <button id="buy-auto">Buy Auto Clicker</button>
-            </div>
+      let autoClickerInterval; 
+      autoClickerInterval = null;
 
-            <div class="upgrade">
-                <h3>Multiplier</h3>
-                <p>Increases the value of each manual click.</p>
-                <p>Owned: <span id="multi-count">0</span></p>
-                <p>Cost: <span id="multi-cost">25</span></p>
-                <button id="buy-multi">Buy Multiplier</button>
-            </div>
-        </section>
+      const startBtn = document.getElementById("startBtn");
+      const stopBtn = document.getElementById("stopBtn");
 
-        <section class="card center">
-            <button id="reset" class="muted">Reset Progress</button>
-        </section>
-    </main>
+      startBtn.addEventListener("click", () => {
+        if (!autoClickerInterval) {
+          autoClickerInterval = setInterval(() => {
+            money += 3;
+            moneyDisplay.textContent = `money: ${money}`;
+          }, 1000);
+            }
+        
+      });
 
-    <script src="script.js"></script>
-</body>
+      stopBtn.addEventListener("click", () => {
+        clearInterval(autoClickerInterval);
+        autoClickerInterval = null;
+      });
+  
+    </script>
+  </body>
 </html>
-
-
-
-    
