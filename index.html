@@ -1,36 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Delius&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clicker Game</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-    <h1>my website.</h1>
-    <h2>About me </h2>
-    <h3>hi im daniel and some things i love to do are.
-    </h3>
-    <ul>
-        <li>Play vidoe games with my friends.</li>
-        <li>ride my bike with friends.
-        <li>love to cook with my dad.</li>
-        
-        <li>https://REYAANK62.github.io</li>
-    </ul>
-    <p>some things that i love to cook with my dad is lamb chops orzo and chicken
-        and other good foods. we alwaysmake the food from scratch and neverbuy food
-        thats already made.
-    </p>
-    <audio controls src="BeepBox-Song.wav"></audio>
-<img src="download.jpg" alt="An image of a single meatball.">
-</body>
+    <main class="container">
+        <h1 class="title">Clicker Game</h1>
 
+        <section id="stats" class="card">
+            <p><strong>Clicks:</strong> <span id="click-count">0</span></p>
+            <p><strong>Click value:</strong> <span id="click-value">1</span></p>
+            <p><strong>Clicks / sec:</strong> <span id="cps">0</span></p>
+        </section>
+
+        <section id="play" class="card center">
+            <button id="click-button" class="big">Click Me!</button>
+        </section>
+
+        <section id="upgrades" class="card upgrades">
+            <div class="upgrade">
+                <h3>Auto Clicker</h3>
+                <p>Generates clicks automatically.</p>
+                <p>Owned: <span id="auto-count">0</span></p>
+                <p>Cost: <span id="auto-cost">50</span></p>
+                <button id="buy-auto">Buy Auto Clicker</button>
+            </div>
+
+            <div class="upgrade">
+                <h3>Multiplier</h3>
+                <p>Increases the value of each manual click.</p>
+                <p>Owned: <span id="multi-count">0</span></p>
+                <p>Cost: <span id="multi-cost">25</span></p>
+                <button id="buy-multi">Buy Multiplier</button>
+            </div>
+        </section>
+
+        <section class="card center">
+            <button id="reset" class="muted">Reset Progress</button>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
 </html>
 
 
