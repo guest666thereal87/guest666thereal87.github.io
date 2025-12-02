@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Clicker Game</title>
   </head>
   <body>
@@ -29,7 +29,7 @@
         moneyDisplay.textContent = `money: ${money}`;
       });
 
-      let autoClickerInterval; 
+      let autoClickerInterval;
       autoClickerInterval = null;
 
       const startBtn = document.getElementById("startBtn");
@@ -41,15 +41,18 @@
             money += 3;
             moneyDisplay.textContent = `money: ${money}`;
           }, 1000);
-            }
-        
+        }
       });
 
       stopBtn.addEventListener("click", () => {
         clearInterval(autoClickerInterval);
         autoClickerInterval = null;
       });
+
+
+
   
-    </script>
+  </script>
   </body>
 </html>
+
