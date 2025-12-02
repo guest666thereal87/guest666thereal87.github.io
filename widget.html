@@ -1,35 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clicker Game</title>
-</head>
-<body>
-   <section>
-   div class="main">
-     <div class="left"></div>
-     <div class="center"></div>
-    
-     <div class="right"></div>
+  </head>
+  <body>
+    <section>
+      <div class="main">
+        <div class="left"></div>
+        <div class="center"></div>
 
-    </div>
-    <img src="download.jpg" alt="bag of money">
-    <h3>money: 0</h3>
-    <button>click me!</button>
-   </section>
-<script> 
+        <div class="right"></div>
+      </div>
+      <img src="download.jpg" alt="bag of money" />
+      <h3>money: 0</h3>
+      <button>click me!</button>
+      <button id="startBtn">Start Auto-Clicker</button>
+      <button id="stopBtn">Stop Auto-Clicker</button>
+    </section>
+    <script>
+      let money = 0;
+      const moneyDisplay = document.querySelector("h3");
+      const button = document.querySelector("button");
 
-let count = 0
+      button.addEventListener("click", () => {
+        money += 1;
+        moneyDisplay.textContent = `money: ${money}`;
+      });
 
-function increment() {
-    count = count + 1
-    console.log(count)
-}
+      let autoClickerInterval; 
+      autoClickerInterval = null;
 
-</script
-</body>
+      const startBtn = document.getElementById("startBtn");
+      const stopBtn = document.getElementById("stopBtn");
+
+      startBtn.addEventListener("click", () => {
+        if (!autoClickerInterval) {
+          autoClickerInterval = setInterval(() => {
+            money += 3;
+            moneyDisplay.textContent = `money: ${money}`;
+          }, 1000);
+            }
+        
+      });
+
+      stopBtn.addEventListener("click", () => {
+        clearInterval(autoClickerInterval);
+        autoClickerInterval = null;
+      });
+  
+    </script>
+  </body>
 </html>
-
-
-
