@@ -1,1 +1,89 @@
-return false; // Allow form submission    return true; // Allow form submission
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clicker Game</title>
+  </head>
+  <body>
+    <section>
+      <div class="main">
+        <div class="left"></div>
+        <div class="center"></div>
+
+        <div class="right"></div>
+      </div>
+      <img src="download.jpg" alt="bag of money" />
+      <h3>money: 0</h3>
+      <button>click me!</button>
+      <button id="startBtn">Start Auto-Clicker</button>
+      <button id="stopBtn">Stop Auto-Clicker</button>
+      <button> shop </button>
+    </section>
+
+    <h2>Please Enter Your Age</h2>
+
+    <form>
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age" min="1" max="120" required />
+      <input type="button" value="Submit Age" onclick="validateAge()" />
+    </form>
+
+    <p id="message"></p>
+    <script>
+      let money = 0;
+      const moneyDisplay = document.querySelector("h3");
+      const button = document.querySelector("button");
+
+      button.addEventListener("click", () => {
+        money += 1;
+        moneyDisplay.textContent = `money: ${money}`;
+      });
+
+      let autoClickerInterval;
+      autoClickerInterval = null;
+
+      const startBtn = document.getElementById("startBtn");
+      const stopBtn = document.getElementById("stopBtn");
+
+      startBtn.addEventListener("click", () => {
+        if (!autoClickerInterval) {
+          autoClickerInterval = setInterval(() => {
+            money += 1;
+            moneyDisplay.textContent = `money: ${money}`;
+          }, 100);
+        }
+      });
+
+      stopBtn.addEventListener("click", () => {
+        clearInterval(autoClickerInterval);
+        autoClickerInterval = null;
+      });
+      function validateAge() {
+        const ageInput = document.getElementById("age");
+        const messageArea = document.getElementById("message");
+        const age = parseInt(ageInput.value, 10);
+
+        if (isNaN(age) || age < 1 || age > 100) {
+          messageArea.textContent = "please enter your real age.";
+          messageArea.style.color = "red";
+          return false; // Allow form submission
+        } else {
+          messageArea.textContent = "Lets get the paper!:)";
+          messageArea.style.color = "green";
+          
+      if (age > 18) {
+        greetingOutput.textContent += " you ready to get some money??!";
+
+        greetingOutput.textContent += " you ready to get some mollah?!!";
+      }
+        }
+      }
+
+if (age < 18) {
+  greetingInput.textContent = " get a job broncitas.";
+}
+    </script>
+  </body>
+</html>
+

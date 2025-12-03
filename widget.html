@@ -15,11 +15,21 @@
       </div>
       <img src="download.jpg" alt="bag of money" />
       <h3>money: 0</h3>
-      <button>click me!</button>
+      <button id="clickBtn">click me!</button>
       <button id="startBtn">Start Auto-Clicker</button>
       <button id="stopBtn">Stop Auto-Clicker</button>
-      <button> shop </button>
+      <button id="shopBtn">shop</button>
     </section>
+
+    <!-- Shop Modal -->
+    <div id="shopModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Shop</h2>
+        <p>Money: <span id="shopMoney">0</span></p>
+        <div id="shopItems" class="shop-items"></div>
+      </div>
+    </div>
 
     <h2>Please Enter Your Age</h2>
 
@@ -30,26 +40,158 @@
     </form>
 
     <p id="message"></p>
+    <style>
+      .modal {
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .modal-content {
+        background-color: #f4f4f4;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+        border-radius: 8px;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close:hover {
+        color: black;
+      }
+
+      .shop-items {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .shop-item {
+        border: 2px solid #ddd;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: white;
+        text-align: center;
+      }
+
+      .shop-item h3 {
+        margin: 0 0 10px 0;
+        font-size: 16px;
+      }
+
+      .shop-item p {
+        margin: 5px 0;
+        font-size: 14px;
+        color: #666;
+      }
+
+      .shop-item .cost {
+        font-weight: bold;
+        color: #2c3e50;
+        font-size: 16px;
+        margin: 10px 0;
+      }
+
+      .shop-item .owned {
+        color: #27ae60;
+        font-weight: bold;
+      }
+
+      .shop-item button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .shop-item button:hover:not(:disabled) {
+        background-color: #2980b9;
+      }
+
+      .shop-item button:disabled {
+        background-color: #bdc3c7;
+        cursor: not-allowed;
+      }
+    </style>
+
     <script>
       let money = 0;
+      let clickValue = 1;
+      let autoClickValue = 1;
       const moneyDisplay = document.querySelector("h3");
-      const button = document.querySelector("button");
+      const clickBtn = document.getElementById("clickBtn");
 
-      button.addEventListener("click", () => {
-        money += 1;
+      // Shop items definition
+      const shopItems = [
+        {
+          id: "doubleClick",
+          name: "Double Click",
+          description: "Double your click value",
+          baseCost: 50,
+          cost: 50,
+          effect: () => { clickValue *= 2; },
+          owned: 0
+        },
+        {
+          id: "tripleClick",
+          name: "Triple Click",
+          description: "Triple your click value",
+          baseCost: 200,
+          cost: 200,
+          effect: () => { clickValue *= 3; },
+          owned: 0
+        },
+        {
+          id: "fasterAuto",
+          name: "Faster Auto-Clicker",
+          description: "Speed up auto-clicker by 50%",
+          baseCost: 100,
+          cost: 100,
+          effect: () => { autoClickValue *= 1.5; },
+          owned: 0
+        },
+        {
+          id: "megaClick",
+          name: "Mega Click",
+          description: "+50 money per click",
+          baseCost: 2000,
+          cost: 2000,
+          effect: () => { clickValue += 50; },
+          owned: 0
+        }
+      ];
+
+      clickBtn.addEventListener("click", () => {
+        money += clickValue;
         moneyDisplay.textContent = `money: ${money}`;
       });
 
-      let autoClickerInterval;
-      autoClickerInterval = null;
-
+      let autoClickerInterval = null;
       const startBtn = document.getElementById("startBtn");
       const stopBtn = document.getElementById("stopBtn");
 
       startBtn.addEventListener("click", () => {
         if (!autoClickerInterval) {
           autoClickerInterval = setInterval(() => {
-            money += 1;
+            money += autoClickValue;
+            money = Math.floor(money);
             moneyDisplay.textContent = `money: ${money}`;
           }, 100);
         }
@@ -59,6 +201,63 @@
         clearInterval(autoClickerInterval);
         autoClickerInterval = null;
       });
+
+      // Shop functionality
+      const shopModal = document.getElementById("shopModal");
+      const shopBtn = document.getElementById("shopBtn");
+      const closeBtn = document.querySelector(".close");
+      const shopItemsContainer = document.getElementById("shopItems");
+      const shopMoneyDisplay = document.getElementById("shopMoney");
+
+      shopBtn.addEventListener("click", () => {
+        shopModal.style.display = "block";
+        updateShopDisplay();
+      });
+
+      closeBtn.addEventListener("click", () => {
+        shopModal.style.display = "none";
+      });
+
+      window.addEventListener("click", (event) => {
+        if (event.target === shopModal) {
+          shopModal.style.display = "none";
+        }
+      });
+
+      function updateShopDisplay() {
+        shopMoneyDisplay.textContent = money;
+        shopItemsContainer.innerHTML = "";
+
+        shopItems.forEach((item, index) => {
+          const itemDiv = document.createElement("div");
+          itemDiv.className = "shop-item";
+          
+          let buttonHTML = `<button onclick="buyItem(${index})"${money < item.cost ? " disabled" : ""}>Buy</button>`;
+          
+          itemDiv.innerHTML = `
+            <h3>${item.name}</h3>
+            <p>${item.description}</p>
+            <p class="cost">Cost: ${item.cost}</p>
+            <p class="owned">Owned: ${item.owned}</p>
+            ${buttonHTML}
+          `;
+          
+          shopItemsContainer.appendChild(itemDiv);
+        });
+      }
+
+      function buyItem(index) {
+        const item = shopItems[index];
+        if (money >= item.cost) {
+          money -= item.cost;
+          item.owned += 1;
+          item.effect();
+          item.cost *= 2;
+          moneyDisplay.textContent = `money: ${money}`;
+          updateShopDisplay();
+          console.log(`Purchased ${item.name}! New cost: ${item.cost}. Click value: ${clickValue}, Auto-click value: ${autoClickValue}`);
+        }
+      }
       function validateAge() {
         const ageInput = document.getElementById("age");
         const messageArea = document.getElementById("message");
@@ -72,7 +271,7 @@
           messageArea.textContent = "Lets get the paper!:)";
           messageArea.style.color = "green";
           
-      if (age < 18) {
+      if (age > 18) {
         greetingOutput.textContent += " you ready to get some money??!";
 
         greetingOutput.textContent += " you ready to get some mollah?!!";
@@ -80,9 +279,10 @@
         }
       }
 
-if (age > 18) {
+if (age < 18) {
   greetingInput.textContent = " get a job broncitas.";
 }
     </script>
   </body>
 </html>
+
