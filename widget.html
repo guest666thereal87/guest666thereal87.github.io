@@ -21,7 +21,7 @@
       <button id="shopBtn">shop</button>
     </section>
 
-    <!-- Shop Modal -->
+    
     <div id="shopModal" class="modal" style="display: none;">
       <div class="modal-content">
         <span class="close">&times;</span>
@@ -40,6 +40,7 @@
     </form>
 
     <p id="message"></p>
+
     <style>
       .modal {
         position: fixed;
@@ -152,7 +153,7 @@
         {
           id: "tripleClick",
           name: "Triple Click",
-          description: "Triple your click value",
+          description: "3 times your click value",
           baseCost: 200,
           cost: 200,
           effect: () => { clickValue *= 3; },
@@ -266,22 +267,12 @@
         if (isNaN(age) || age < 1 || age > 100) {
           messageArea.textContent = "please enter your real age.";
           messageArea.style.color = "red";
-          return false; // Allow form submission
+          return false;
         } else {
           messageArea.textContent = "Lets get the paper!:)";
           messageArea.style.color = "green";
-          
-      if (age > 18) {
-        greetingOutput.textContent += " you ready to get some money??!";
-
-        greetingOutput.textContent += " you ready to get some mollah?!!";
-      }
         }
       }
-
-if (age < 18) {
-  greetingInput.textContent = " get a job broncitas.";
-}
     </script>
   </body>
 </html>
