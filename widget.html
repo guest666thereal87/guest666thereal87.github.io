@@ -18,14 +18,15 @@
       <button>click me!</button>
       <button id="startBtn">Start Auto-Clicker</button>
       <button id="stopBtn">Stop Auto-Clicker</button>
+      <button> shop </button>
     </section>
 
     <h2>Please Enter Your Age</h2>
 
-    <form onsubmit="return validateAge()">
+    <form>
       <label for="age">Age:</label>
       <input type="number" id="age" name="age" min="1" max="120" required />
-      <button type="submit">Submit</button>
+      <input type="button" value="Submit Age" onclick="validateAge()" />
     </form>
 
     <p id="message"></p>
@@ -48,9 +49,9 @@
       startBtn.addEventListener("click", () => {
         if (!autoClickerInterval) {
           autoClickerInterval = setInterval(() => {
-            money += 3;
+            money += 1;
             moneyDisplay.textContent = `money: ${money}`;
-          }, 1000);
+          }, 100);
         }
       });
 
@@ -63,23 +64,25 @@
         const messageArea = document.getElementById("message");
         const age = parseInt(ageInput.value, 10);
 
-        if (isNaN(age) || age < 1 || age > 120) {
-          messageArea.textContent =
-            "please enter your real name.";
+        if (isNaN(age) || age < 1 || age > 100) {
+          messageArea.textContent = "please enter your real age.";
           messageArea.style.color = "red";
           return false; // Allow form submission
         } else {
-          messageArea.textContent = "Lets get the paper!:)"
+          messageArea.textContent = "Lets get the paper!:)";
           messageArea.style.color = "green";
           
-        } 
-      }
-
       if (age < 18) {
         greetingOutput.textContent += " you ready to get some money??!";
 
         greetingOutput.textContent += " you ready to get some mollah?!!";
       }
+        }
+      }
+
+if (age > 18) {
+  greetingInput.textContent = " get a job broncitas.";
+}
     </script>
   </body>
 </html>
