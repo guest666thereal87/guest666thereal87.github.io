@@ -21,8 +21,7 @@
       <button id="shopBtn">shop</button>
     </section>
 
-    
-    <div id="shopModal" class="modal" style="display: none;">
+    <div id="shopModal" class="modal" style="display: none">
       <div class="modal-content">
         <span class="close">&times;</span>
         <h2>Shop</h2>
@@ -147,8 +146,10 @@
           description: "Double your click value",
           baseCost: 50,
           cost: 50,
-          effect: () => { clickValue *= 2; },
-          owned: 0
+          effect: () => {
+            clickValue *= 2;
+          },
+          owned: 0,
         },
         {
           id: "tripleClick",
@@ -156,8 +157,10 @@
           description: "3 times your click value",
           baseCost: 200,
           cost: 200,
-          effect: () => { clickValue *= 3; },
-          owned: 0
+          effect: () => {
+            clickValue *= 3;
+          },
+          owned: 0,
         },
         {
           id: "fasterAuto",
@@ -165,8 +168,10 @@
           description: "Speed up auto-clicker by 50%",
           baseCost: 100,
           cost: 100,
-          effect: () => { autoClickValue *= 1.5; },
-          owned: 0
+          effect: () => {
+            autoClickValue *= 1.5;
+          },
+          owned: 0,
         },
         {
           id: "megaClick",
@@ -174,9 +179,11 @@
           description: "+50 money per click",
           baseCost: 2000,
           cost: 2000,
-          effect: () => { clickValue += 50; },
-          owned: 0
-        }
+          effect: () => {
+            clickValue += 50;
+          },
+          owned: 0,
+        },
       ];
 
       clickBtn.addEventListener("click", () => {
@@ -232,9 +239,11 @@
         shopItems.forEach((item, index) => {
           const itemDiv = document.createElement("div");
           itemDiv.className = "shop-item";
-          
-          let buttonHTML = `<button onclick="buyItem(${index})"${money < item.cost ? " disabled" : ""}>Buy</button>`;
-          
+
+          let buttonHTML = `<button onclick="buyItem(${index})"${
+            money < item.cost ? " disabled" : ""
+          }>Buy</button>`;
+
           itemDiv.innerHTML = `
             <h3>${item.name}</h3>
             <p>${item.description}</p>
@@ -242,7 +251,7 @@
             <p class="owned">Owned: ${item.owned}</p>
             ${buttonHTML}
           `;
-          
+
           shopItemsContainer.appendChild(itemDiv);
         });
       }
@@ -256,7 +265,9 @@
           item.cost *= 2;
           moneyDisplay.textContent = `money: ${money}`;
           updateShopDisplay();
-          console.log(`Purchased ${item.name}! New cost: ${item.cost}. Click value: ${clickValue}, Auto-click value: ${autoClickValue}`);
+          console.log(
+            `Purchased ${item.name}! New cost: ${item.cost}. Click value: ${clickValue}, Auto-click value: ${autoClickValue}`
+          );
         }
       }
       function validateAge() {
@@ -276,4 +287,3 @@
     </script>
   </body>
 </html>
-
