@@ -19,14 +19,25 @@
       <button id="startBtn">Start Auto-Clicker</button>
       <button id="stopBtn">Stop Auto-Clicker</button>
       <button id="shopBtn">shop</button>
+      <button id="secretBtn" style="position: fixed; bottom: 20px; right: 20px; padding: 2px 4px; font-size: 8px; background-color: #555; color: white; border: none; border-radius: 4px; cursor: pointer;">?</button>
     </section>
 
     <div id="shopModal" class="modal" style="display: none">
       <div class="modal-content">
         <span class="close">&times;</span>
+        <button id="closeShopBtn" class="close-shop-button">Close Shop</button>
         <h2>Shop</h2>
         <p>Money: <span id="shopMoney">0</span></p>
         <div id="shopItems" class="shop-items"></div>
+      </div>
+    </div>
+
+    <div id="secretModal" class="modal" style="display: none">
+      <div class="modal-content" style="width: 100%; height: 100%; max-width: none; border-radius: 0; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <button id="secretClose" style="position: absolute; top: 20px; right: 20px; background-color: #e74c3c; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 16px;">Close</button>
+        <h2>Enter Code</h2>
+        <input type="password" id="secretCode" placeholder="Enter code" style="width: 300px; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;">
+        <button onclick="checkSecretCode()" style="width: 300px; padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">Submit</button>
       </div>
     </div>
 
@@ -53,12 +64,14 @@
 
       .modal-content {
         background-color: #f4f4f4;
-        margin: 10% auto;
+        margin: 0 auto;
         padding: 20px;
         border: 1px solid #888;
-        width: 80%;
-        max-width: 600px;
-        border-radius: 8px;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        border-radius: 0;
+        overflow-y: auto;
       }
 
       .close {
@@ -71,6 +84,21 @@
 
       .close:hover {
         color: black;
+      }
+
+      .close-shop-button {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+
+      .close-shop-button:hover {
+        background-color: #c0392b;
       }
 
       .shop-items {
@@ -135,6 +163,7 @@
       let money = 0;
       let clickValue = 1;
       let autoClickValue = 1;
+      const MAX_MONEY = 100000000000000000000000000000000000000000000000000000; // Set a maximum money cap
       const moneyDisplay = document.querySelector("h3");
       const clickBtn = document.getElementById("clickBtn");
 
@@ -143,22 +172,22 @@
         {
           id: "doubleClick",
           name: "Double Click",
-          description: "Double your click value",
+          description: "+1 click power",
           baseCost: 50,
           cost: 50,
           effect: () => {
-            clickValue *= 2;
+            clickValue += 1;
           },
           owned: 0,
         },
         {
           id: "tripleClick",
           name: "Triple Click",
-          description: "3 times your click value",
+          description: "+3 click power",
           baseCost: 200,
           cost: 200,
           effect: () => {
-            clickValue *= 3;
+            clickValue += 3;
           },
           owned: 0,
         },
@@ -166,8 +195,8 @@
           id: "fasterAuto",
           name: "Faster Auto-Clicker",
           description: "Speed up auto-clicker by 50%",
-          baseCost: 100,
-          cost: 100,
+          baseCost: 10000,
+          cost: 10000,
           effect: () => {
             autoClickValue *= 1.5;
           },
@@ -187,7 +216,7 @@
       ];
 
       clickBtn.addEventListener("click", () => {
-        money += clickValue;
+        money = Math.min(money + clickValue, MAX_MONEY);
         moneyDisplay.textContent = `money: ${money}`;
       });
 
@@ -198,7 +227,7 @@
       startBtn.addEventListener("click", () => {
         if (!autoClickerInterval) {
           autoClickerInterval = setInterval(() => {
-            money += autoClickValue;
+            money = Math.min(money + autoClickValue, MAX_MONEY);
             money = Math.floor(money);
             moneyDisplay.textContent = `money: ${money}`;
           }, 100);
@@ -214,6 +243,7 @@
       const shopModal = document.getElementById("shopModal");
       const shopBtn = document.getElementById("shopBtn");
       const closeBtn = document.querySelector(".close");
+      const closeShopBtn = document.getElementById("closeShopBtn");
       const shopItemsContainer = document.getElementById("shopItems");
       const shopMoneyDisplay = document.getElementById("shopMoney");
 
@@ -226,11 +256,48 @@
         shopModal.style.display = "none";
       });
 
+      closeShopBtn.addEventListener("click", () => {
+        shopModal.style.display = "none";
+      });
+
       window.addEventListener("click", (event) => {
         if (event.target === shopModal) {
           shopModal.style.display = "none";
         }
       });
+
+      // Secret button functionality
+      const secretBtn = document.getElementById("secretBtn");
+      const secretModal = document.getElementById("secretModal");
+      const secretClose = document.getElementById("secretClose");
+
+      secretBtn.addEventListener("click", () => {
+        secretModal.style.display = "block";
+      });
+
+      secretClose.addEventListener("click", () => {
+        secretModal.style.display = "none";
+      });
+
+      window.addEventListener("click", (event) => {
+        if (event.target === secretModal) {
+          secretModal.style.display = "none";
+        }
+      });
+
+      function checkSecretCode() {
+        const codeInput = document.getElementById("secretCode");
+        if (codeInput.value === "daniel") {
+          money = Math.min(money + 1000000, MAX_MONEY);
+          moneyDisplay.textContent = `money: ${money}`;
+          alert("Correct! You've been awarded 1,000,000 money!");
+          secretModal.style.display = "none";
+          codeInput.value = "";
+        } else {
+          alert("Incorrect code!");
+          codeInput.value = "";
+        }
+      }
 
       function updateShopDisplay() {
         shopMoneyDisplay.textContent = money;
@@ -279,6 +346,9 @@
           messageArea.textContent = "please enter your real age.";
           messageArea.style.color = "red";
           return false;
+        } else if (age > 18) {
+          messageArea.textContent = "get a job broncitis";
+          messageArea.style.color = "green";
         } else {
           messageArea.textContent = "Lets get the paper!:)";
           messageArea.style.color = "green";
