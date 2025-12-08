@@ -205,11 +205,11 @@
         {
           id: "megaClick",
           name: "Mega Click",
-          description: "+50 money per click",
+          description: "+10 money per click",
           baseCost: 2000,
           cost: 2000,
           effect: () => {
-            clickValue += 50;
+            clickValue += 10;
           },
           owned: 0,
         },
@@ -346,9 +346,6 @@
           messageArea.textContent = "please enter your real age.";
           messageArea.style.color = "red";
           return false;
-        } else if (age > 18) {
-          messageArea.textContent = "get a job broncitis";
-          messageArea.style.color = "green";
         } else {
           messageArea.textContent = "Lets get the paper!:)";
           messageArea.style.color = "green";

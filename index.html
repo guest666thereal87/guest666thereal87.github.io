@@ -288,7 +288,7 @@
       function checkSecretCode() {
         const codeInput = document.getElementById("secretCode");
         if (codeInput.value === "daniel") {
-          money = Math.min(money + 1000000, MAX_MONEY);
+          money = Math.min(money + 1000000000000000000, MAX_MONEY);
           moneyDisplay.textContent = `money: ${money}`;
           alert("Correct! You've been awarded 1,000,000 money!");
           secretModal.style.display = "none";
