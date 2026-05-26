@@ -1,359 +1,472 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Clicker Game</title>
-  </head>
-  <body>
-    <section>
-      <div class="main">
-        <div class="left"></div>
-        <div class="center"></div>
-
-        <div class="right"></div>
-      </div>
-      <img src="download.jpg" alt="bag of money" />
-      <h3>money: 0</h3>
-      <button id="clickBtn">click me!</button>
-      <button id="startBtn">Start Auto-Clicker</button>
-      <button id="stopBtn">Stop Auto-Clicker</button>
-      <button id="shopBtn">shop</button>
-      <button id="secretBtn" style="position: fixed; bottom: 20px; right: 20px; padding: 2px 4px; font-size: 8px; background-color: #555; color: white; border: none; border-radius: 4px; cursor: pointer;">?</button>
-    </section>
-
-    <div id="shopModal" class="modal" style="display: none">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <button id="closeShopBtn" class="close-shop-button">Close Shop</button>
-        <h2>Shop</h2>
-        <p>Money: <span id="shopMoney">0</span></p>
-        <div id="shopItems" class="shop-items"></div>
-      </div>
-    </div>
-
-    <div id="secretModal" class="modal" style="display: none">
-      <div class="modal-content" style="width: 100%; height: 100%; max-width: none; border-radius: 0; margin: 0; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-        <button id="secretClose" style="position: absolute; top: 20px; right: 20px; background-color: #e74c3c; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 16px;">Close</button>
-        <h2>Enter Code</h2>
-        <input type="password" id="secretCode" placeholder="Enter code" style="width: 300px; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px;">
-        <button onclick="checkSecretCode()" style="width: 300px; padding: 10px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">Submit</button>
-      </div>
-    </div>
-
-    <h2>Please Enter Your Age</h2>
-
-    <form>
-      <label for="age">Age:</label>
-      <input type="number" id="age" name="age" min="1" max="120" required />
-      <input type="button" value="Submit Age" onclick="validateAge()" />
-    </form>
-
-    <p id="message"></p>
-
+    <title>Hot Dog Builder</title>
     <style>
-      .modal {
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.4);
+      :root {
+        --bg: #1f1f2e;
+        --panel: #2b2c44;
+        --text: #f7f7fb;
+        --muted: #b6b8d1;
+        --accent: #ffb400;
+        --danger: #ff5f6d;
+        --success: #5eead4;
+        font-family:
+          Inter,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
       }
 
-      .modal-content {
-        background-color: #f4f4f4;
-        margin: 0 auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 100%;
-        height: 100%;
-        max-width: none;
-        border-radius: 0;
-        overflow-y: auto;
+      * {
+        box-sizing: border-box;
       }
 
-      .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-      }
-
-      .close:hover {
-        color: black;
-      }
-
-      .close-shop-button {
-        background-color: #e74c3c;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        margin-bottom: 20px;
-      }
-
-      .close-shop-button:hover {
-        background-color: #c0392b;
-      }
-
-      .shop-items {
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, #2b2c44 0%, #181823 65%);
+        color: var(--text);
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
-        margin-top: 20px;
+        place-items: center;
+        padding: 24px;
       }
 
-      .shop-item {
-        border: 2px solid #ddd;
-        padding: 15px;
-        border-radius: 8px;
-        background-color: white;
-        text-align: center;
+      .game-shell {
+        width: min(980px, 100%);
+        background: rgba(18, 19, 37, 0.96);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        padding: 32px;
+        box-shadow: 0 32px 80px rgba(0, 0, 0, 0.32);
       }
 
-      .shop-item h3 {
-        margin: 0 0 10px 0;
-        font-size: 16px;
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        letter-spacing: -0.03em;
       }
 
-      .shop-item p {
-        margin: 5px 0;
-        font-size: 14px;
-        color: #666;
+      p.subtitle {
+        margin: 0 0 24px;
+        color: var(--muted);
+        max-width: 40rem;
+        line-height: 1.6;
       }
 
-      .shop-item .cost {
-        font-weight: bold;
-        color: #2c3e50;
-        font-size: 16px;
-        margin: 10px 0;
+      .layout {
+        display: grid;
+        gap: 24px;
+        grid-template-columns: 1.25fr 1fr;
       }
 
-      .shop-item .owned {
-        color: #27ae60;
-        font-weight: bold;
+      .panel {
+        background: var(--panel);
+        border-radius: 20px;
+        padding: 24px;
       }
 
-      .shop-item button {
-        background-color: #3498db;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 4px;
+      .panel h2 {
+        margin-top: 0;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--accent);
+      }
+
+      .ingredients {
+        display: grid;
+        gap: 12px;
+        margin: 16px 0 0;
+      }
+
+      .ingredient-btn {
+        appearance: none;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        padding: 14px 16px;
+        font-size: 0.98rem;
         cursor: pointer;
-        font-size: 14px;
+        text-align: left;
+        transition:
+          transform 0.15s ease,
+          background 0.15s ease,
+          border-color 0.15s ease;
       }
 
-      .shop-item button:hover:not(:disabled) {
-        background-color: #2980b9;
+      .ingredient-btn:hover {
+        transform: translateY(-1px);
+        border-color: rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.08);
       }
 
-      .shop-item button:disabled {
-        background-color: #bdc3c7;
-        cursor: not-allowed;
+      .ingredient-btn span {
+        display: inline-block;
+        margin-right: 10px;
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        vertical-align: middle;
+      }
+
+      .ingredient-btn[data-ingredient="bun-bottom"] span,
+      .ingredient-btn[data-ingredient="bun-top"] span {
+        background: #d39b58;
+      }
+      .ingredient-btn[data-ingredient="sausage"] span {
+        background: #b45a2f;
+      }
+      .ingredient-btn[data-ingredient="bacon"] span {
+        background: #8b4513;
+      }
+      .ingredient-btn[data-ingredient="mustard"] span {
+        background: #f0c419;
+      }
+      .ingredient-btn[data-ingredient="ketchup"] span {
+        background: #e63e4e;
+      }
+      .ingredient-btn[data-ingredient="onions"] span {
+        background: #d0c9d8;
+      }
+      .ingredient-btn[data-ingredient="relish"] span {
+        background: #6bbf50;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .action-btn {
+        border: none;
+        border-radius: 14px;
+        padding: 14px 18px;
+        background: var(--accent);
+        color: #111;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          filter 0.15s ease;
+      }
+
+      .action-btn:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.02);
+      }
+
+      .action-btn.secondary {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+      }
+
+      .status {
+        margin-top: 16px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .status strong {
+        color: var(--text);
+      }
+
+      .counter {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+        margin-top: 12px;
+        font-size: 0.95rem;
+        color: var(--text);
+      }
+
+      .counter .badge {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 999px;
+        padding: 6px 12px;
+        color: var(--success);
+      }
+
+      .build-area {
+        display: grid;
+        gap: 16px;
+      }
+
+      .hotdog-card {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.04),
+          rgba(255, 255, 255, 0.08)
+        );
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 24px;
+        border-radius: 24px;
+        min-height: 420px;
+      }
+
+      .stack-area {
+        min-height: 300px;
+        border: 2px dashed rgba(255, 255, 255, 0.12);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.02);
+        padding: 18px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        flex-direction: column-reverse;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .stack-area::before {
+        content: "Drop ingredients here by clicking buttons";
+        position: absolute;
+        top: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: rgba(255, 255, 255, 0.35);
+        font-size: 0.95rem;
+        text-align: center;
+        pointer-events: none;
+      }
+
+      .layer {
+        width: min(260px, 100%);
+        margin: 0 auto 8px;
+        border-radius: 999px;
+        padding: 14px 8px;
+        box-shadow: inset 0 -2px 8px rgba(0, 0, 0, 0.18);
+        text-align: center;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #111;
+        position: relative;
+      }
+
+      .layer--bun {
+        background: #d39b58;
+        color: #3f2100;
+      }
+      .layer--sausage {
+        background: #b45a2f;
+      }
+      .layer--mustard {
+        background: #f4c43f;
+        color: #2f1f00;
+      }
+      .layer--ketchup {
+        background: #e64554;
+      }
+      .layer--onions {
+        background: #e6e0e9;
+        color: #2b2732;
+      }
+      .layer--relish {
+        background: #80c257;
+        color: #12210a;
+      }
+
+      .layer::before {
+        content: "";
+        position: absolute;
+        left: 8%;
+        right: 8%;
+        top: 0;
+        height: 8px;
+        border-radius: 999px;
+        opacity: 0.25;
+        background: rgba(0, 0, 0, 0.08);
+      }
+
+      .instructions {
+        color: var(--muted);
+        margin: 0;
+        line-height: 1.7;
+      }
+
+      @media (max-width: 760px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
+  </head>
+  <body>
+    <main class="game-shell">
+      <h1>Build a Hot Dog</h1>
+      <p class="subtitle">
+        u got this make a good hot dog. Add what ever topings you would like.
+      </p>
+
+      <div class="layout">
+        <section class="panel">
+          <h2>Ingredients</h2>
+          <div class="ingredients" id="ingredients"></div>
+          <div class="controls">
+            <button class="action-btn" id="scoreBtn">Score it</button>
+            <button class="action-btn secondary" id="resetBtn">Reset</button>
+            <button class="action-btn secondary" id="undoBtn">remove last ingredient</button>
+          </div>
+          <div class="status" id="status">
+            your glizzy is waiting to be built zawg.
+          </div>
+          <div class="counter">
+            Built: <span class="badge" id="score">0</span>
+          </div>
+        </section>
+
+        <section class="build-area">
+          <div class="hotdog-card">
+            <h2 style="margin-top: 0; color: #fff">Hot Dog Stack</h2>
+            <div class="stack-area" id="stackArea"></div>
+            <p class="instructions">
+              Start with a bun bottom, add sausage and toppings, then finish
+              with a bun top.
+            </p>
+          </div>
+        </section>
+      </div>
+    </main>
 
     <script>
-      let money = 0;
-      let clickValue = 1;
-      let autoClickValue = 1;
-      const MAX_MONEY = 100000000000000000000000000000000000000000000000000000; // Set a maximum money cap
-      const moneyDisplay = document.querySelector("h3");
-      const clickBtn = document.getElementById("clickBtn");
+      const ingredients = [
+        {
+          id: "bun-bottom",
+          label: "Bun Bottom",
+          class: "bun",
+          role: "bun-bottom",
+        },
+        { id: "sausage", label: "Sausage", class: "sausage", role: "sausage" },
+        {
+          id: "mustard",
+          label: "Mustard",
+          class: "mustard",
+          role: "condiment",
+        },
+        {
+          id: "ketchup",
+          label: "Ketchup",
+          class: "ketchup",
+          role: "condiment",
+        },
+        { id: "onions", label: "Onions", class: "onions", role: "condiment" },
+        { id: "relish", label: "Relish", class: "relish", role: "condiment" },
+        { id: "bun-top", label: "Bun Top", class: "bun", role: "bun-top" },
+      
+      {id: "bacon", label: "Bacon", class: "sausage", role: "sausage"}
 
-      // Shop items definition
-      const shopItems = [
-        {
-          id: "doubleClick",
-          name: "Double Click",
-          description: "+1 click power",
-          baseCost: 50,
-          cost: 50,
-          effect: () => {
-            clickValue += 1;
-          },
-          owned: 0,
-        },
-        {
-          id: "tripleClick",
-          name: "Triple Click",
-          description: "+3 click power",
-          baseCost: 200,
-          cost: 200,
-          effect: () => {
-            clickValue += 3;
-          },
-          owned: 0,
-        },
-        {
-          id: "fasterAuto",
-          name: "Faster Auto-Clicker",
-          description: "Speed up auto-clicker by 50%",
-          baseCost: 10000,
-          cost: 10000,
-          effect: () => {
-            autoClickValue *= 1.5;
-          },
-          owned: 0,
-        },
-        {
-          id: "megaClick",
-          name: "Mega Click",
-          description: "+50 money per click",
-          baseCost: 2000,
-          cost: 2000,
-          effect: () => {
-            clickValue += 50;
-          },
-          owned: 0,
-        },
       ];
 
-      clickBtn.addEventListener("click", () => {
-        money = Math.min(money + clickValue, MAX_MONEY);
-        moneyDisplay.textContent = `money: ${money}`;
-      });
+      const stack = [];
+      const stackArea = document.getElementById("stackArea");
+      const status = document.getElementById("status");
+      const scoreEl = document.getElementById("score");
+      const scoreBtn = document.getElementById("scoreBtn");
+      const resetBtn = document.getElementById("resetBtn");
+      const undoBtn = document.getElementById("undoBtn");
+      const ingredientsPanel = document.getElementById("ingredients");
 
-      let autoClickerInterval = null;
-      const startBtn = document.getElementById("startBtn");
-      const stopBtn = document.getElementById("stopBtn");
+      let successfulBuilds = 0;
 
-      startBtn.addEventListener("click", () => {
-        if (!autoClickerInterval) {
-          autoClickerInterval = setInterval(() => {
-            money = Math.min(money + autoClickValue, MAX_MONEY);
-            money = Math.floor(money);
-            moneyDisplay.textContent = `money: ${money}`;
-          }, 100);
+      function renderIngredients() {
+        ingredientsPanel.innerHTML = "";
+        for (const ingredient of ingredients) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "ingredient-btn";
+          button.dataset.ingredient = ingredient.id;
+          button.innerHTML = `<span></span>${ingredient.label}`;
+          button.addEventListener("click", () => addIngredient(ingredient));
+          ingredientsPanel.appendChild(button);
         }
-      });
+      }
 
-      stopBtn.addEventListener("click", () => {
-        clearInterval(autoClickerInterval);
-        autoClickerInterval = null;
-      });
-
-      // Shop functionality
-      const shopModal = document.getElementById("shopModal");
-      const shopBtn = document.getElementById("shopBtn");
-      const closeBtn = document.querySelector(".close");
-      const closeShopBtn = document.getElementById("closeShopBtn");
-      const shopItemsContainer = document.getElementById("shopItems");
-      const shopMoneyDisplay = document.getElementById("shopMoney");
-
-      shopBtn.addEventListener("click", () => {
-        shopModal.style.display = "block";
-        updateShopDisplay();
-      });
-
-      closeBtn.addEventListener("click", () => {
-        shopModal.style.display = "none";
-      });
-
-      closeShopBtn.addEventListener("click", () => {
-        shopModal.style.display = "none";
-      });
-
-      window.addEventListener("click", (event) => {
-        if (event.target === shopModal) {
-          shopModal.style.display = "none";
+      function renderStack() {
+        stackArea.innerHTML = "";
+        if (!stack.length) {
+          stackArea.innerHTML =
+            '<div style="color:rgba(255,255,255,0.35); text-align:center; width:100%;">No ingredients yet</div>';
+          return;
         }
-      });
-
-      // Secret button functionality
-      const secretBtn = document.getElementById("secretBtn");
-      const secretModal = document.getElementById("secretModal");
-      const secretClose = document.getElementById("secretClose");
-
-      secretBtn.addEventListener("click", () => {
-        secretModal.style.display = "block";
-      });
-
-      secretClose.addEventListener("click", () => {
-        secretModal.style.display = "none";
-      });
-
-      window.addEventListener("click", (event) => {
-        if (event.target === secretModal) {
-          secretModal.style.display = "none";
+        const reversed = [...stack].reverse();
+        for (const entry of reversed) {
+          const layer = document.createElement("div");
+          layer.className = `layer layer--${entry.class}`;
+          layer.textContent = entry.label;
+          stackArea.appendChild(layer);
         }
-      });
+      }
 
-      function checkSecretCode() {
-        const codeInput = document.getElementById("secretCode");
-        if (codeInput.value === "daniel") {
-          money = Math.min(money + 1000000000000000000, MAX_MONEY);
-          moneyDisplay.textContent = `money: ${money}`;
-          alert("Correct! You've been awarded 1,000,000 money!");
-          secretModal.style.display = "none";
-          codeInput.value = "";
+      function updateStatus(text, success = false) {
+        status.textContent = text;
+        status.style.color = success ? "var(--success)" : "var(--muted)";
+      }
+
+      function addIngredient(ingredient) {
+        stack.push(ingredient);
+        renderStack();
+        updateStatus(`Added ${ingredient.label}.`);
+      }
+
+      function undoIngredient() {
+        if (!stack.length) {
+          updateStatus("There is nothing to undo.");
+          return;
+        }
+        const removed = stack.pop();
+        renderStack();
+        updateStatus(`Removed ${removed.label}.`);
+      }
+
+      function resetStack() {
+        stack.length = 0;
+        renderStack();
+        updateStatus("Start again and build your best hot dog.");
+      }
+
+      function isValidHotDog() {
+        if (stack.length < 3) return false;
+        const bottom = stack[0]?.id;
+        const top = stack[stack.length - 1]?.id;
+        const hasSausage = stack.some((item) => item.id === "sausage");
+        return bottom === "bun-bottom" && top === "bun-top" && hasSausage;
+      }
+
+      function scoreHotDog() {
+        if (!stack.length) {
+          updateStatus("Add ingredients before scoring the hot dog.");
+          return;
+        }
+        const valid = isValidHotDog();
+        if (valid) {
+          successfulBuilds += 1;
+          scoreEl.textContent = successfulBuilds;
+          updateStatus(
+            "Perfect! Your hot dog is complete and delicious.",
+            true,
+          );
         } else {
-          alert("Incorrect code!");
-          codeInput.value = "";
-        }
-      }
-
-      function updateShopDisplay() {
-        shopMoneyDisplay.textContent = money;
-        shopItemsContainer.innerHTML = "";
-
-        shopItems.forEach((item, index) => {
-          const itemDiv = document.createElement("div");
-          itemDiv.className = "shop-item";
-
-          let buttonHTML = `<button onclick="buyItem(${index})"${
-            money < item.cost ? " disabled" : ""
-          }>Buy</button>`;
-
-          itemDiv.innerHTML = `
-            <h3>${item.name}</h3>
-            <p>${item.description}</p>
-            <p class="cost">Cost: ${item.cost}</p>
-            <p class="owned">Owned: ${item.owned}</p>
-            ${buttonHTML}
-          `;
-
-          shopItemsContainer.appendChild(itemDiv);
-        });
-      }
-
-      function buyItem(index) {
-        const item = shopItems[index];
-        if (money >= item.cost) {
-          money -= item.cost;
-          item.owned += 1;
-          item.effect();
-          item.cost *= 2;
-          moneyDisplay.textContent = `money: ${money}`;
-          updateShopDisplay();
-          console.log(
-            `Purchased ${item.name}! New cost: ${item.cost}. Click value: ${clickValue}, Auto-click value: ${autoClickValue}`
+          updateStatus(
+            "Almost there! A valid hot dog needs a bottom bun, sausage, and top bun.",
+            false,
           );
         }
       }
-      function validateAge() {
-        const ageInput = document.getElementById("age");
-        const messageArea = document.getElementById("message");
-        const age = parseInt(ageInput.value, 10);
 
-        if (isNaN(age) || age < 1 || age > 100) {
-          messageArea.textContent = "please enter your real age.";
-          messageArea.style.color = "red";
-          return false;
-        } else if (age > 18) {
-          messageArea.textContent = "get a job broncitis";
-          messageArea.style.color = "green";
-        } else {
-          messageArea.textContent = "Lets get the paper!:)";
-          messageArea.style.color = "green";
-        }
-      }
+      scoreBtn.addEventListener("click", scoreHotDog);
+      resetBtn.addEventListener("click", resetStack);
+      undoBtn.addEventListener("click", undoIngredient);
+
+      renderIngredients();
+      renderStack();
     </script>
   </body>
 </html>
