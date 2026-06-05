@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 64" role="img" aria-label="Ketchup">
+  <rect x="10" y="14" width="108" height="36" rx="18" fill="#e74b5d"/>
+  <path d="M26 24c18-10 41-10 58 0" fill="none" stroke="#ff9aa7" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+  <circle cx="96" cy="30" r="6" fill="#ffd6dc" opacity="0.65"/>
+</svg>

@@ -1,0 +1,164 @@
+Co pilot helped me with these lines of code
+
+
+
+.ingredient-btn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  padding: 12px;
+  font-size: 0.98rem;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.ingredient-thumb {
+  width: 56px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ingredient-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ingredient-label small {
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+
+
+
+const ingredients = [
+  {
+    id: "bun-bottom",
+    label: "Bun Bottom",
+    short: "Bread",
+    image: "assets/ingredients/bun-bottom.svg",
+    class: "bun",
+    role: "bun-bottom",
+  },
+  {
+    id: "sausage",
+    label: "Sausage",
+    short: "Main",
+    image: "assets/ingredients/sausage.svg",
+    class: "sausage",
+    role: "sausage",
+  },
+  {
+    id: "mustard",
+    label: "Mustard",
+    short: "Condiment",
+    image: "assets/ingredients/mustard.svg",
+    class: "mustard",
+    role: "condiment",
+  },
+  {
+    id: "ketchup",
+    label: "Ketchup",
+    short: "Condiment",
+    image: "assets/ingredients/ketchup.svg",
+    class: "ketchup",
+    role: "condiment",
+  },
+  {
+    id: "onions",
+    label: "Onions",
+    short: "Topping",
+    image: "assets/ingredients/onions.svg",
+    class: "onions",
+    role: "condiment",
+  },
+  {
+    id: "relish",
+    label: "Relish",
+    short: "Topping",
+    image: "assets/ingredients/relish.svg",
+    class: "relish",
+    role: "condiment",
+  },
+  {
+    id: "bun-top",
+    label: "Bun Top",
+    short: "Bread",
+    image: "assets/ingredients/bun-top.svg",
+    class: "bun",
+    role: "bun-top",
+  },
+  {
+    id: "bacon",
+    label: "Bacon",
+    short: "Extra",
+    image: "assets/ingredients/bacon.svg",
+    class: "sausage",
+    role: "sausage",
+  },
+];
+
+function renderIngredients() {
+  ingredientsPanel.innerHTML = "";
+  for (const ingredient of ingredients) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "ingredient-btn";
+    button.dataset.ingredient = ingredient.id;
+    button.innerHTML = `
+      <img class="ingredient-thumb" src="${ingredient.image}" alt="${ingredient.label}" />
+      <span class="ingredient-label">
+        ${ingredient.label}
+        <small>${ingredient.short}</small>
+      </span>
+    `;
+    button.addEventListener("click", () => addIngredient(ingredient));
+    ingredientsPanel.appendChild(button);
+  }
+}
+
+
+ layer.style.display = "grid";
+          layer.style.placeItems = "center";
+          layer.style.minHeight = "56px";
+          layer.style.padding = "8px";
+
+          const img = document.createElement("img");
+          img.src = entry.image;
+          img.alt = entry.label;
+          img.style.width = "100%";
+          img.style.maxWidth = "180px";
+          img.style.height = "auto";
+          img.style.display = "block";
+
+          layer.appendChild(img);
+
+
+
+
+           <div id="qrPanel" style="display:none;margin-top:16px;padding:12px;border-radius:12px;background:rgba(255,255,255,0.02);">
+              <h3 style="margin:0 0 8px;color:var(--accent);">Share this Hot Dog</h3>
+              <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+                <img id="qrImage" src="" alt="QR code" width="160" height="160" style="background:#fff;padding:6px;border-radius:8px;" />
+                <div style="min-width:220px">
+                  <a id="shareLink" href="#" target="_blank" rel="noreferrer" style="color:var(--text);word-break:break-all;display:block;margin-bottom:8px;"></a>
+                  <button id="copyLinkBtn" class="action-btn secondary" style="padding:8px 10px;border-radius:10px">Copy link</button>
+                  <a id="downloadQr" class="action-btn" style="margin-left:8px;padding:8px 10px;border-radius:10px;color:#111;background:var(--accent);text-decoration:none" target="_blank" rel="noreferrer">Open QR</a>
+                </div>
+              </div>
+            </div>
